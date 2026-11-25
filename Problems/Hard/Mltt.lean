@@ -266,6 +266,11 @@ def substMany (args : List Tm) (t : Tm) : Tm :=
     | some u => u
     | none => Tm.var (x - args.length)) t
 
+/-- Substitute a telescope into a type whose variables are in that telescope's
+newest-first de Bruijn order. -/
+def substParams (params : List Tm) (t : Tm) : Tm :=
+  substMany params.reverse t
+
 /-- The first `n` arguments and the rest. -/
 def splitAt (n : Nat) (args : List Tm) : List Tm × List Tm :=
   (args.take n, args.drop n)
@@ -302,7 +307,8 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
       args.length = sig.params.length + sig.indices.length →
       (∀ (i : Nat) (a A : Tm),
         args[i]? = some a →
-        ((sig.params ++ sig.indices).map (substMany args))[i]? = some A →
+        ((sig.params.map (substMany args)) ++
+          (sig.indices.map (substParams (args.take sig.params.length))))[i]? = some A →
         HasType env Γ a A) →
       HasType env Γ (.ind I args) (.sort (sig.level + 1))
   | roll (Γ : Ctx) (I : Nat) (sig : IndSig) (c : Nat) (ctor : CtorSig)
@@ -323,7 +329,8 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
         ctor.recArgs[i]? = some idxs →
         HasType env Γ r (.ind I (args.take sig.params.length ++ idxs.map (substMany args)))) →
       HasType env Γ (.roll I c args)
-        (.ind I (args.take sig.params.length ++ ctor.indices.map (substMany args)))
+        (.ind I (args.take sig.params.length ++
+          ctor.indices.map (substParams (args.take sig.params.length))))
   | case (Γ : Ctx) (I : Nat) (sig : IndSig) (scrut C : Tm) (brs : List Tm) (i : Nat)
       (args : List Tm) :
       lookupIndStrict env I = some sig →
@@ -331,7 +338,7 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
       HasType env Γ scrut (.ind I args) →
       HasType env
         (ctxExtendMany Γ
-          (sig.indices.map (substMany (args.take sig.params.length)) ++ [.ind I args]))
+          (sig.indices.map (substParams (args.take sig.params.length)) ++ [.ind I args]))
         C (.sort i) →
       brs.length = sig.ctors.length →
       (∀ (c : Nat) (ctor : CtorSig) (br : Tm),
@@ -341,11 +348,11 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
         ctor.recArgs = [] →
         HasType env Γ br
           (substMany
-            ([.roll I c (args.take sig.params.length ++ ctor.indices.map (substMany args))] ++
-              ctor.indices.map (substMany args))
+            ([.roll I c (args.take sig.params.length)] ++
+              (ctor.indices.map (substParams (args.take sig.params.length))).reverse)
             C)) →
       HasType env Γ (.case I scrut C brs)
-        (substMany ([scrut] ++ args.drop sig.params.length) C)
+        (substMany ([scrut] ++ (args.drop sig.params.length).reverse) C)
 
 /-! ### First typed target: Eq/J
 
