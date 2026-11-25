@@ -341,11 +341,11 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
         ctor.recArgs = [] →
         HasType env Γ br
           (substMany
-            ((ctor.indices.map (substMany args)) ++
-              [.roll I c (args.take sig.params.length ++ ctor.indices.map (substMany args))])
+            ([.roll I c (args.take sig.params.length ++ ctor.indices.map (substMany args))] ++
+              ctor.indices.map (substMany args))
             C)) →
       HasType env Γ (.case I scrut C brs)
-        (substMany (args.drop sig.params.length ++ [scrut]) C)
+        (substMany ([scrut] ++ args.drop sig.params.length) C)
 
 /-! ### First typed target: Eq/J
 
