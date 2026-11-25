@@ -47,6 +47,11 @@ not establish a general ranking:
 - manual per-node launch rather than a scheduler;
 - launch and check overhead are not isolated;
 - S1's first-green time is 1m39, but two S1 workers reached it independently.
+- The S1 agent-minute figure is the **stop-rule cost** (4 workers for 1m39).
+  The manual controller did not kill the remaining lanes; one completed at
+  4m20 and another S1 lane also continued. Those late completions are excluded
+  from the method endpoint but are a reminder that a real scheduler must
+  enforce the kill.
 
 The next H5 test needs a real scheduler, a wider held-out DAG, repeats, and a
 measurement of scheduler overhead separate from solve time.
