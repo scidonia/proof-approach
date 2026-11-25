@@ -56,6 +56,35 @@ not establish a general ranking:
 The next H5 test needs a real scheduler, a wider held-out DAG, repeats, and a
 measurement of scheduler overhead separate from solve time.
 
+## Harder cell
+
+Two independent held-out medium nodes:
+
+- `medium/stlc` — 4 targets
+- `medium/mergesort` — 6 targets
+
+| arm | workers | allocation | both nodes green | agent-min |
+| --- | ---: | --- | ---: | ---: |
+| S1 flat | 4 | blind race both | 9m10 | 36.7 |
+| **DAG balanced** | **4** | **3 mergesort, 1 stlc** | **5m40** | **20.3** |
+
+Node times:
+
+| node | DAG first green | S1 first green |
+| --- | ---: | ---: |
+| mergesort | 4m53 | 5m24 |
+| stlc | 5m40 | 9m10 |
+
+The balanced DAG was 3m30 faster and used roughly half the agent-minutes. The
+critical node was STLC for the DAG, not mergesort: allocating three lanes to
+mergesort was based on target count, not measured difficulty. A scheduler with
+cost estimates would move a lane to STLC.
+
+Caveats: one run, manual per-node launch, no repeats, and the S1 remaining lanes
+were stopped after both nodes were green. This is consistent with H5, not a
+general ranking.
+
+
 ## Artifacts
 
 Proofs from these arms remain in the ignored `runs/h5-*` directories, not in
