@@ -353,12 +353,12 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
 -/
 
 def ctxJ : Ctx := [
-  .sort 0,
-  .var 0,
-  .pi (.var 1) (.pi (eqTy (.var 2) (.var 1) (.var 0)) (.sort 0)),
-  .app (.app (.var 0) (.var 1)) (refl (.var 2) (.var 1)),
+  eqTy (.var 4) (.var 3) (.var 0),
   .var 3,
-  eqTy (.var 4) (.var 3) (.var 0)
+  .app (.app (.var 0) (.var 1)) (refl (.var 2) (.var 1)),
+  .pi (.var 1) (.pi (eqTy (.var 2) (.var 1) (.var 0)) (.sort 0)),
+  .var 0,
+  .sort 0
 ]
 
 def jMotive : Tm :=
