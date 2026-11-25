@@ -276,6 +276,14 @@ newest-first de Bruijn order. -/
 def substParams (params : List Tm) (t : Tm) : Tm :=
   substMany params.reverse t
 
+/-- Context for a case motive: bind the index types, then bind the scrutinee
+at the generic instance over the freshly bound index variables. -/
+def caseMotiveCtx (Γ : Ctx) (I : Nat) (sig : IndSig) (params : List Tm) : Ctx :=
+  let idxCtx := ctxExtendMany Γ (sig.indices.map (substParams params))
+  let n := sig.indices.length
+  ctxExtend idxCtx
+    (.ind I (params.map (Tm.shift n 0) ++ (List.range n).reverse.map Tm.var))
+
 /-- The first `n` arguments and the rest. -/
 def splitAt (n : Nat) (args : List Tm) : List Tm × List Tm :=
   (args.take n, args.drop n)
@@ -342,8 +350,7 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
       args.length = sig.params.length + sig.indices.length →
       HasType env Γ scrut (.ind I args) →
       HasType env
-        (ctxExtendMany Γ
-          (sig.indices.map (substParams (args.take sig.params.length)) ++ [.ind I args]))
+        (caseMotiveCtx Γ I sig (args.take sig.params.length))
         C (.sort i) →
       brs.length = sig.ctors.length →
       (∀ (c : Nat) (ctor : CtorSig) (br : Tm),
