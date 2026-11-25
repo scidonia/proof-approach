@@ -403,6 +403,20 @@
       ]
     },
     {
+      "id": "hard/mltt-weaken",
+      "tier": "hard",
+      "path": "Hard/MlttWeaken",
+      "namespace": "Problems.Hard.MlttWeaken",
+      "budget_s": 1800,
+      "targets": [
+        {
+          "name": "hasType_weaken",
+          "proof": "hasType_weaken_proof",
+          "desc": "typing is preserved by adding an unused context binder"
+        }
+      ]
+    },
+    {
       "id": "medium/ref-store",
       "tier": "medium",
       "path": "Medium/RefStore",

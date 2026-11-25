@@ -14,3 +14,4 @@ import Problems.Hard.StlcNorm
 import Problems.Hard.ImpCompiler
 import Problems.Hard.Pcf
 import Problems.Hard.Mltt
+import Problems.Hard.MlttWeaken
