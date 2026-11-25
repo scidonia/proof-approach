@@ -253,3 +253,12 @@ should be read as targets/hour, not problems/hour.
 * The honesty protocol is an honour system.  No run reported an exposure, but
   the harness cannot detect a read proof; the rates are upper bounds if the
   reports are incomplete.
+
+## H5 DAG pilot
+
+`h5-dag-pilot.md` records the first two-node DAG cell.  Balanced DAG scheduling
+(3 lanes on the critical node, 1 on the other) finished in 1m20 versus 1m39 for
+S1 flat at the same total worker count, with 4.5 versus 6.6 agent-min.  This is
+one small sample, manually launched; it supports H5 but does not establish a
+general scheduler ranking.
+
