@@ -12,8 +12,8 @@ namespace Problems.Hard.MlttWeaken
 open Problems.Hard.Mltt
 
 def hasType_weaken : Prop :=
-  ∀ {env : Env} {Γ : Ctx} {A B : Tm} {t : Tm},
-    HasType env Γ t A →
-    HasType env (B :: Γ) (Tm.shift 1 0 t) (Tm.shift 1 0 A)
+  ∀ {Γ : Ctx} {A B : Tm} {t : Tm},
+    HasType [Eq_sig] Γ t A →
+    HasType [Eq_sig] (B :: Γ) (Tm.shift 1 0 t) (Tm.shift 1 0 A)
 
 end Problems.Hard.MlttWeaken
