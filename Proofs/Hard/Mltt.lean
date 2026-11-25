@@ -113,11 +113,11 @@ private theorem mctx_motive : HasType [Eq_sig] mctx jM (.sort 0) := by
 
 theorem J_has_type_proof : J_has_type := by
   unfold J_has_type jTerm jResult jMotive
-  have hcase : HasType [Eq_sig] ctxJ (.case 0 (.var 0) jM [.var 2])
+  have hcase : HasType [Eq_sig] ctxJ (.case 0 1 (.var 0) jM [.var 2])
       (substMany ([.var 0] ++ (List.drop Eq_sig.params.length caseArgs).reverse) jM) := by
-    refine HasType.case (Γ := ctxJ) (I := 0) (sig := Eq_sig)
+    refine HasType.case (Γ := ctxJ) (I := 0) (n := 1) (sig := Eq_sig)
       (scrut := Tm.var 0) (C := jM) (brs := [Tm.var 2]) (i := 0) (args := caseArgs)
-      lookupIndStrict_Eq_sig caseArgs_length ?_ mctx_motive ctor_length ?_
+      lookupIndStrict_Eq_sig rfl caseArgs_length ?_ mctx_motive ctor_length ?_
     · exact HasType.var _ _ _ ctxLookup_ctxJ_zero
     · intro c ctor br hc hb hp hr
       cases c with

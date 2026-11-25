@@ -22,7 +22,7 @@ typechecks with the index-refining `case` rule.
 
 - Source: run `s0-mltt-j6`, agent `a1`, method `S0`.
 - Size: 139 lines, one target.
-- SHA-256: `bd2d6dc45ee89f2461379283e53ed35ac47971000e2950a50a1dfcb0fc354af5`.
+- SHA-256: `dd9a8bb655cdb453186baec90d2cf6df692c6b08dbbb4d97ed9711334a98371b`.
 - Check: `OK hard/mltt-j (1/1 targets)`, `solved=true`, `statement_ok=true`.
 - Axioms: `propext`, `Quot.sound`.
 

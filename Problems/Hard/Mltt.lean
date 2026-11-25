@@ -26,7 +26,7 @@ inductive Tm : Type where
   | fix : Tm → Tm → Tm
   | ind : Nat → List Tm → Tm
   | roll : Nat → Nat → List Tm → Tm
-  | case : Nat → Tm → Tm → List Tm → Tm
+  | case : Nat → Nat → Tm → Tm → List Tm → Tm
   deriving Repr
 
 namespace Tm
@@ -45,7 +45,7 @@ def size : Tm → Nat
   | fix A t => 1 + size A + size t
   | ind _ args => 1 + args.foldr (fun u n => size u + n) 0
   | roll _ _ args => 1 + args.foldr (fun u n => size u + n) 0
-  | case _ scrut C brs =>
+  | case _ _ scrut C brs =>
       1 + size scrut + size C + brs.foldr (fun u n => size u + n) 0
 
 /-- Rename under a binder. -/
@@ -53,7 +53,13 @@ def upRen (ρ : Nat → Nat) : Nat → Nat
   | 0 => 0
   | x + 1 => ρ x + 1
 
-/-- Capture-avoiding renaming.  The `case` motive binds the scrutinee. -/
+/-- Rename under `n` binders. -/
+def upRenN : Nat → (Nat → Nat) → Nat → Nat
+  | 0, ρ => ρ
+  | n + 1, ρ => upRen (upRenN n ρ)
+
+/-- Capture-avoiding renaming.  The `case` motive binds its index variables
+and the scrutinee. -/
 def rename (ρ : Nat → Nat) : Tm → Tm
   | var x => var (ρ x)
   | sort i => sort i
@@ -63,8 +69,8 @@ def rename (ρ : Nat → Nat) : Tm → Tm
   | fix A t => fix (rename ρ A) (rename (upRen ρ) t)
   | ind I args => ind I (args.map (rename ρ))
   | roll I c args => roll I c (args.map (rename ρ))
-  | case I scrut C brs =>
-      case I (rename ρ scrut) (rename (upRen ρ) C) (brs.map (rename ρ))
+  | case I n scrut C brs =>
+      case I n (rename ρ scrut) (rename (upRenN (n + 1) ρ) C) (brs.map (rename ρ))
 
 /-- Shift free variables `x ≥ c` by `d`. -/
 def shiftSub (d c : Nat) : Nat → Nat :=
@@ -78,7 +84,13 @@ def upSub (σ : Nat → Tm) : Nat → Tm
   | 0 => var 0
   | x + 1 => shift 1 0 (σ x)
 
-/-- Capture-avoiding substitution.  The `case` motive binds the scrutinee. -/
+/-- Lift a substitution under `n` binders. -/
+def upSubN : Nat → (Nat → Tm) → Nat → Tm
+  | 0, σ => σ
+  | n + 1, σ => upSub (upSubN n σ)
+
+/-- Capture-avoiding substitution.  The `case` motive binds its index
+variables and the scrutinee. -/
 def subst (σ : Nat → Tm) : Tm → Tm
   | var x => σ x
   | sort i => sort i
@@ -88,8 +100,8 @@ def subst (σ : Nat → Tm) : Tm → Tm
   | fix A t => fix (subst σ A) (subst (upSub σ) t)
   | ind I args => ind I (args.map (subst σ))
   | roll I c args => roll I c (args.map (subst σ))
-  | case I scrut C brs =>
-      case I (subst σ scrut) (subst (upSub σ) C) (brs.map (subst σ))
+  | case I n scrut C brs =>
+      case I n (subst σ scrut) (subst (upSubN (n + 1) σ) C) (brs.map (subst σ))
 
 /-- Substitute `u` for de Bruijn variable `0`. -/
 def subst0 (u : Tm) (t : Tm) : Tm :=
@@ -150,7 +162,7 @@ def occursIndFuel (fuel : Nat) (I : Nat) (t : Tm) : Bool :=
           (J == I) || args.any (fun a => occursIndFuel fuel I a)
       | .roll _ _ args =>
           args.any (fun a => occursIndFuel fuel I a)
-      | .case _ scrut C brs =>
+      | .case _ _ scrut C brs =>
           occursIndFuel fuel I scrut
             || occursIndFuel fuel I C
             || brs.any (fun b => occursIndFuel fuel I b)
@@ -344,9 +356,10 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
       HasType env Γ (.roll I c args)
         (.ind I (args.take sig.params.length ++
           ctor.indices.map (substParams (args.take sig.params.length))))
-  | case (Γ : Ctx) (I : Nat) (sig : IndSig) (scrut C : Tm) (brs : List Tm) (i : Nat)
+  | case (Γ : Ctx) (I : Nat) (n : Nat) (sig : IndSig) (scrut C : Tm) (brs : List Tm) (i : Nat)
       (args : List Tm) :
       lookupIndStrict env I = some sig →
+      n = sig.indices.length →
       args.length = sig.params.length + sig.indices.length →
       HasType env Γ scrut (.ind I args) →
       HasType env
@@ -363,7 +376,7 @@ inductive HasType (env : Env) : Ctx → Tm → Tm → Prop
             ([.roll I c (args.take sig.params.length)] ++
               (ctor.indices.map (substParams (args.take sig.params.length))).reverse)
             C)) →
-      HasType env Γ (.case I scrut C brs)
+      HasType env Γ (.case I n scrut C brs)
         (substMany ([scrut] ++ (args.drop sig.params.length).reverse) C)
 
 /-! ### First typed target: Eq/J
@@ -384,7 +397,7 @@ def jMotive : Tm :=
   .app (.app (.var 5) (.var 1)) (.var 0)
 
 def jTerm : Tm :=
-  .case 0 (.var 0) jMotive [.var 2]
+  .case 0 1 (.var 0) jMotive [.var 2]
 
 def jResult : Tm :=
   .app (.app (.var 3) (.var 1)) (.var 0)
