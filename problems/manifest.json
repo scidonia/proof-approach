@@ -1,0 +1,435 @@
+{
+  "version": 1,
+  "description": "Statements only. Reference answers are not stored here. A run copies the statements and hashes them; the scorer never reads a solution.",
+  "problems": [
+    {
+      "id": "smoke/arithmetic",
+      "tier": "smoke",
+      "path": "Smoke/Arithmetic",
+      "namespace": "Problems.Smoke.Arithmetic",
+      "budget_s": 300,
+      "targets": [
+        {
+          "name": "add_zero",
+          "proof": "add_zero_proof",
+          "desc": "the harness smoke target"
+        },
+        {
+          "name": "add_comm",
+          "proof": "add_comm_proof",
+          "desc": "the second harness smoke target"
+        },
+        {
+          "name": "one_plus_one",
+          "proof": "one_plus_one_proof",
+          "desc": "a decidable target for the native_decide rejection"
+        }
+      ]
+    },
+    {
+      "id": "easy/gcd",
+      "tier": "easy",
+      "path": "Easy/Gcd",
+      "namespace": "Problems.Easy.Gcd",
+      "budget_s": 1800,
+      "targets": [
+        {
+          "name": "gcd_isGcd",
+          "proof": "gcd_isGcd_proof",
+          "desc": "bounded Euclid returns a greatest common divisor"
+        },
+        {
+          "name": "gcd_zero",
+          "proof": "gcd_zero_proof",
+          "desc": "the zero case"
+        }
+      ]
+    },
+    {
+      "id": "easy/sort",
+      "tier": "easy",
+      "path": "Easy/Sort",
+      "namespace": "Problems.Easy.Sort",
+      "budget_s": 1800,
+      "targets": [
+        {
+          "name": "sort_sorted",
+          "proof": "sort_sorted_proof",
+          "desc": "insertion sort is sorted"
+        },
+        {
+          "name": "sort_perm",
+          "proof": "sort_perm_proof",
+          "desc": "insertion sort is a permutation"
+        }
+      ]
+    },
+    {
+      "id": "easy/stack",
+      "tier": "easy",
+      "path": "Easy/Stack",
+      "namespace": "Problems.Easy.Stack",
+      "budget_s": 1800,
+      "targets": [
+        {
+          "name": "compile_correct",
+          "proof": "compile_correct_proof",
+          "desc": "the stack compiler preserves the expression's value"
+        }
+      ]
+    },
+    {
+      "id": "medium/stlc",
+      "tier": "medium",
+      "path": "Medium/Stlc",
+      "namespace": "Problems.Medium.Stlc",
+      "budget_s": 3600,
+      "targets": [
+        {
+          "name": "subst_preserves_typing",
+          "proof": "subst_preserves_typing_proof",
+          "desc": "the context-split substitution lemma"
+        },
+        {
+          "name": "progress",
+          "proof": "progress_proof",
+          "desc": "a closed well-typed term is a value or steps"
+        },
+        {
+          "name": "preservation",
+          "proof": "preservation_proof",
+          "desc": "a step preserves the type"
+        },
+        {
+          "name": "deterministic",
+          "proof": "deterministic_proof",
+          "desc": "the step relation is deterministic"
+        }
+      ]
+    },
+    {
+      "id": "medium/regex",
+      "tier": "medium",
+      "path": "Medium/Regex",
+      "namespace": "Problems.Medium.Regex",
+      "budget_s": 3600,
+      "targets": [
+        {
+          "name": "matchStar_iff",
+          "proof": "matchStar_iff_proof",
+          "desc": "the star accumulator's invariant"
+        },
+        {
+          "name": "matches_iff",
+          "proof": "matches_iff_proof",
+          "desc": "the matcher decides the language"
+        }
+      ]
+    },
+    {
+      "id": "medium/avl",
+      "tier": "medium",
+      "path": "Medium/Avl",
+      "namespace": "Problems.Medium.Avl",
+      "budget_s": 3600,
+      "targets": [
+        {
+          "name": "insert_bst",
+          "proof": "insert_bst_proof",
+          "desc": "insertion preserves the BST invariant"
+        },
+        {
+          "name": "insert_balanced",
+          "proof": "insert_balanced_proof",
+          "desc": "insertion preserves AVL balance"
+        },
+        {
+          "name": "insert_mem",
+          "proof": "insert_mem_proof",
+          "desc": "the inserted key is present"
+        }
+      ]
+    },
+    {
+      "id": "medium/framed-refines",
+      "tier": "medium",
+      "path": "Medium/FramedRefines",
+      "namespace": "Problems.Medium.FramedRefines",
+      "budget_s": 3600,
+      "targets": [
+        {
+          "name": "refines_refl",
+          "proof": "refines_refl_proof",
+          "desc": "reflexivity"
+        },
+        {
+          "name": "refines_trans",
+          "proof": "refines_trans_proof",
+          "desc": "transitivity with the union frame"
+        },
+        {
+          "name": "frame_weaken",
+          "proof": "frame_weaken_proof",
+          "desc": "a smaller frame is stronger"
+        },
+        {
+          "name": "write_inside_frame",
+          "proof": "write_inside_frame_proof",
+          "desc": "a write inside the frame is admitted"
+        },
+        {
+          "name": "write_outside_frame_rejected",
+          "proof": "write_outside_frame_rejected_proof",
+          "desc": "a write outside the frame is rejected"
+        }
+      ]
+    },
+    {
+      "id": "medium/dep-vec",
+      "tier": "medium",
+      "path": "Medium/DepVec",
+      "namespace": "Problems.Medium.DepVec",
+      "budget_s": 1800,
+      "targets": [
+        {
+          "name": "preservation",
+          "proof": "preservation_proof",
+          "desc": "a step preserves the type"
+        },
+        {
+          "name": "progress",
+          "proof": "progress_proof",
+          "desc": "a well-typed term is a value or steps"
+        }
+      ]
+    },
+    {
+      "id": "medium/mergesort",
+      "tier": "medium",
+      "path": "Medium/MergeSort",
+      "namespace": "Problems.Medium.MergeSort",
+      "budget_s": 2400,
+      "targets": [
+        {
+          "name": "merge_sorted",
+          "proof": "merge_sorted_proof",
+          "desc": "merging sorted lists is sorted"
+        },
+        {
+          "name": "merge_perm",
+          "proof": "merge_perm_proof",
+          "desc": "merging is a permutation of the concatenation"
+        },
+        {
+          "name": "split_perm",
+          "proof": "split_perm_proof",
+          "desc": "split is a permutation of the input"
+        },
+        {
+          "name": "split_length",
+          "proof": "split_length_proof",
+          "desc": "split preserves the length"
+        },
+        {
+          "name": "mergesort_sorted",
+          "proof": "mergesort_sorted_proof",
+          "desc": "merge sort returns a sorted list"
+        },
+        {
+          "name": "mergesort_perm",
+          "proof": "mergesort_perm_proof",
+          "desc": "merge sort returns a permutation of the input"
+        }
+      ]
+    },
+    {
+      "id": "hard/lambda-cr",
+      "tier": "hard",
+      "path": "Hard/LambdaCR",
+      "namespace": "Problems.Hard.LambdaCR",
+      "budget_s": 7200,
+      "targets": [
+        {
+          "name": "parred_diamond",
+          "proof": "parred_diamond_proof",
+          "desc": "parallel reduction has the diamond property"
+        },
+        {
+          "name": "parred_betaStar",
+          "proof": "parred_betaStar_proof",
+          "desc": "parallel reduction is a beta sequence"
+        },
+        {
+          "name": "betaStar_parred",
+          "proof": "betaStar_parred_proof",
+          "desc": "the strip lemma"
+        },
+        {
+          "name": "church_rosser",
+          "proof": "church_rosser_proof",
+          "desc": "beta reduction is confluent"
+        }
+      ]
+    },
+    {
+      "id": "hard/stlc-norm",
+      "tier": "hard",
+      "path": "Hard/StlcNorm",
+      "namespace": "Problems.Hard.StlcNorm",
+      "budget_s": 7200,
+      "targets": [
+        {
+          "name": "sn_step",
+          "proof": "sn_step_proof",
+          "desc": "strong normalisation is preserved by a step"
+        },
+        {
+          "name": "reducible_sn",
+          "proof": "reducible_sn_proof",
+          "desc": "every reducible term is strongly normalising"
+        },
+        {
+          "name": "reducible_closed",
+          "proof": "reducible_closed_proof",
+          "desc": "every closed well-typed term is reducible"
+        },
+        {
+          "name": "strong_normalisation",
+          "proof": "strong_normalisation_proof",
+          "desc": "every closed well-typed term is strongly normalising"
+        }
+      ]
+    },
+    {
+      "id": "hard/imp-compiler",
+      "tier": "hard",
+      "path": "Hard/ImpCompiler",
+      "namespace": "Problems.Hard.ImpCompiler",
+      "budget_s": 7200,
+      "targets": [
+        {
+          "name": "exec_deterministic",
+          "proof": "exec_deterministic_proof",
+          "desc": "big-step execution is deterministic"
+        },
+        {
+          "name": "compile_correct",
+          "proof": "compile_correct_proof",
+          "desc": "the compiled program terminates with the same state"
+        }
+      ]
+    },
+    {
+      "id": "hard/pcf",
+      "tier": "hard",
+      "path": "Hard/Pcf",
+      "namespace": "Problems.Hard.Pcf",
+      "budget_s": 3600,
+      "targets": [
+        {
+          "name": "step_deterministic",
+          "proof": "step_deterministic_proof",
+          "desc": "one step is deterministic"
+        },
+        {
+          "name": "steps_trans",
+          "proof": "steps_trans_proof",
+          "desc": "Steps is transitive"
+        },
+        {
+          "name": "contextual_le_plug",
+          "proof": "contextual_le_plug_proof",
+          "desc": "the contextual preorder is closed under plugging into a context"
+        },
+        {
+          "name": "contextual_le_value",
+          "proof": "contextual_le_value_proof",
+          "desc": "value half of the preorder-to-simulation implication"
+        },
+        {
+          "name": "contextual_le_app",
+          "proof": "contextual_le_app_proof",
+          "desc": "application half of the preorder-to-simulation implication"
+        },
+        {
+          "name": "sim_refl",
+          "proof": "sim_refl_proof",
+          "desc": "similarity is reflexive"
+        },
+        {
+          "name": "sim_app",
+          "proof": "sim_app_proof",
+          "desc": "the applicative clause"
+        },
+        {
+          "name": "contextual_le_implies_sim",
+          "proof": "contextual_le_implies_sim_proof",
+          "desc": "contextual may-preorder implies similarity"
+        },
+        {
+          "name": "sim_congruent",
+          "proof": "sim_congruent_proof",
+          "desc": "similarity is a precongruence (Howe)"
+        },
+        {
+          "name": "sim_implies_contextual_le",
+          "proof": "sim_implies_contextual_le_proof",
+          "desc": "similarity implies the contextual may-preorder"
+        },
+        {
+          "name": "contextual_le_iff_sim",
+          "proof": "contextual_le_iff_sim_proof",
+          "desc": "the preorder equivalence"
+        },
+        {
+          "name": "contextual_eq_iff_sim_both",
+          "proof": "contextual_eq_iff_sim_both_proof",
+          "desc": "contextual equivalence is similarity in both directions"
+        }
+      ]
+    },
+    {
+      "id": "hard/mltt-j",
+      "tier": "hard",
+      "path": "Hard/Mltt",
+      "namespace": "Problems.Hard.Mltt",
+      "budget_s": 3600,
+      "targets": [
+        {
+          "name": "J_has_type",
+          "proof": "J_has_type_proof",
+          "desc": "the Eq J eliminator typechecks with an index-refining case"
+        }
+      ]
+    },
+    {
+      "id": "medium/ref-store",
+      "tier": "medium",
+      "path": "Medium/RefStore",
+      "namespace": "Problems.Medium.RefStore",
+      "budget_s": 2400,
+      "targets": [
+        {
+          "name": "subst_preserves_typing",
+          "proof": "subst_preserves_typing_proof",
+          "desc": "the context-split substitution lemma"
+        },
+        {
+          "name": "store_typing_weaken",
+          "proof": "store_typing_weaken_proof",
+          "desc": "typing is stable under extending the store typing"
+        },
+        {
+          "name": "preservation",
+          "proof": "preservation_proof",
+          "desc": "a step preserves typing and extends the store typing"
+        },
+        {
+          "name": "progress",
+          "proof": "progress_proof",
+          "desc": "a closed well-typed term is a value or steps"
+        }
+      ]
+    }
+  ]
+}

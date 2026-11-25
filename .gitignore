@@ -1,0 +1,8 @@
+/.lake
+/.shellenv.json
+/.remote.json
+/runs/
+/.direnv/
+/Check/
+__pycache__/
+*.pyc

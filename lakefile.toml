@@ -1,0 +1,20 @@
+name = "proof-approach"
+version = "0.1.0"
+defaultTargets = ["Problems"]
+
+# Only the problem statements are a Lake library.  A run's proofs are compiled
+# directly with `lake env lean Proof/<problem>.lean`, so a proof file that the
+# harness has not yet seen does not fail `lake build`.
+[[lean_lib]]
+name = "Problems"
+
+# Proof modules live under `Proof/`, one file per problem, and may import one
+# another for shared lemmas.  `lake build Proofs.<path>` builds one module and
+# its local dependencies; no root module imports every proof, because a run
+# contains only the proofs for the problems it was given.
+[[lean_lib]]
+name = "Proofs"
+
+# No dependencies.  The corpus uses Lean core and Std only, which keeps a
+# one-file elaboration in the one-second range and keeps mathlib from becoming
+# an accidental source of answers or of build time.
