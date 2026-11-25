@@ -28,3 +28,19 @@ typechecks with the index-refining `case` rule.
 
 This is a **stage proof**, not the contextual-equivalence theorem.
 
+## MLTT stage M0c
+
+`Hard/MlttWeaken.lean` proves weakening for the `Eq` family:
+
+```lean
+HasType [Eq_sig] Γ t A →
+HasType [Eq_sig] (B :: Γ) (shift 1 0 t) (shift 1 0 A)
+```
+
+- Source: run `s0-mltt-weaken3`, agent `a1`, method `S0`.
+- Size: 845 lines, one target.
+- SHA-256: `b2624bccf2ee7466fe0cc49408e88cc307eed426c599445027eafb0de025b9c2`.
+- Check: `OK hard/mltt-weaken (1/1 targets)`, `solved=true`, `statement_ok=true`.
+- Axioms: `propext`, `Quot.sound`.
+
+
