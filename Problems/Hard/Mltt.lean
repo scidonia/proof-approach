@@ -251,8 +251,13 @@ abbrev Env : Type := List IndSig
 
 def ctxExtend (Γ : Ctx) (A : Tm) : Ctx := A :: Γ
 
-def ctxExtendMany (Γ : Ctx) (As : List Tm) : Ctx :=
-  As.reverse ++ Γ
+def ctxExtendMany (Γ : Ctx) : List Tm → Ctx
+  | [] => Γ
+  | A :: As =>
+      ctxExtendMany (ctxExtend Γ A) (As.map (Tm.shift 1 0))
+termination_by As => As.length
+decreasing_by
+  simp_wf
 
 def ctxLookup : Ctx → Nat → Option Tm
   | [], _ => none
