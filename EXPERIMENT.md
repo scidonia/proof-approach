@@ -16,6 +16,7 @@ lemma-cutting supervisor, and a race with twice as many workers.
 | H2 | broadcasting verified checkpoints beats blind racing | S2's problems/hour is not above S1's outside repeat noise |
 | H3 | cutting a goal into lemmas and assigning them beats whole-proof search | S3 is slower, or its lemmas are green but unused at integration |
 | H4 | doubling the blind swarm from four to eight is sublinear | S4/S1 rate ratio is near or below 1, or contention dominates |
+| H5 | a DAG scheduler that runs ready nodes in parallel and chooses a method per node beats a flat method on a multi-node DAG at the same wall-clock budget | no wall-clock gain over the best flat method outside the repeat range, or a gain only at disproportionate agent-minutes or check contention |
 
 ## Design
 
@@ -74,6 +75,40 @@ strategy (value/pivot, Howe, non-Howe congruence).  The conductor (the session t
 agents) carries messages between supervisor and workers for S2 and S3; that
 relay time is inside the measured wall clock, because a deployed cross-talk
 supervisor would also spend it.
+
+## DAG scheduling (H5)
+
+H5 is a scheduler, not a run-level method.  It replaces "one method for one
+problem" with "one method for one ready node".
+
+A node is:
+
+```text
+id, statement, dependencies, owner file, check command, budget,
+truth status (known/expected/open), lane count
+```
+
+The scheduler:
+
+1. runs a specification-falsification phase first, with several independent
+   counterexample attempts per new node; the first machine-checked refutation
+   stops that node and starts serial core repair;
+2. freezes a verified warm base and starts only nodes whose dependencies are
+   green;
+3. chooses a method per node: S0 for small or tightly coupled nodes, S1/S3 for
+   independent lemma sets, S5 for the critical hard lemma, S2 only when
+   verified definitions are genuinely reusable;
+4. prioritises the critical path, not raw occupancy;
+5. allows one writer per file; the scheduler copies verified modules into the
+   shared root and never lets two workers edit the same file;
+6. stops sibling lanes at first green and merges immediately.
+
+The test compares the DAG scheduler with the best flat method on the same
+multi-node DAG, same warm base, host, budget, and check policy.  Primary
+endpoint: wall-clock to every node green.  Secondary: agent-minutes, checks,
+critical-path stalls, and contention.  A flat one-problem-per-run harness cannot
+test H5; the scheduler must be implemented before the cell is run.
+
 
 ## Corpus
 
