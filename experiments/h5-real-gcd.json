@@ -1,0 +1,13 @@
+{
+  "id": "h5-real",
+  "nodes": [
+    {
+      "id": "gcd",
+      "problem": "easy/gcd",
+      "deps": [],
+      "method": "S0",
+      "agents": 1,
+      "budget_s": 300
+    }
+  ]
+}

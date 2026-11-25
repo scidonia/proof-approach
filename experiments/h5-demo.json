@@ -1,0 +1,21 @@
+{
+  "id": "h5-demo",
+  "nodes": [
+    {
+      "id": "gcd",
+      "problem": "easy/gcd",
+      "deps": [],
+      "method": "S0",
+      "agents": 1,
+      "budget_s": 1800
+    },
+    {
+      "id": "stack",
+      "problem": "easy/stack",
+      "deps": [],
+      "method": "S0",
+      "agents": 1,
+      "budget_s": 1800
+    }
+  ]
+}

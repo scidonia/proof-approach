@@ -89,3 +89,20 @@ general ranking.
 
 Proofs from these arms remain in the ignored `runs/h5-*` directories, not in
 `Proofs/`, so the corpus stays held-out.
+
+## Scheduler backend smoke
+
+`harness/dag.py --spawn` on a one-node `easy/gcd` DAG:
+
+```text
+created h5-real-gcd
+start gcd (S0, 1 lane) 14:12:48.778Z
+solved gcd             14:14:14.856Z  (86.1s)
+stopped siblings
+DAG result: solved
+```
+
+This validates the `omp -p` worker adapter, first-green event detection, and
+sibling shutdown.  It is not an H5 comparison: one node, one arm, and the
+`easy/gcd` proof is already known from the corpus runs.
+

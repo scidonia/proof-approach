@@ -106,8 +106,10 @@ The scheduler:
 The test compares the DAG scheduler with the best flat method on the same
 multi-node DAG, same warm base, host, budget, and check policy.  Primary
 endpoint: wall-clock to every node green.  Secondary: agent-minutes, checks,
-critical-path stalls, and contention.  A flat one-problem-per-run harness cannot
-test H5; the scheduler must be implemented before the cell is run.
+critical-path stalls, and contention.  A prototype scheduler is
+`harness/dag.py`: it creates per-node runs, starts `omp -p` workers, and stops
+them at first green.  The H5 cells before it were manually launched; the
+scheduler comparison still needs a multi-node held-out run.
 
 
 ## Corpus

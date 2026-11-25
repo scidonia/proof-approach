@@ -149,6 +149,26 @@ Record in `run.json`:
 Agents are nondeterministic, so replay is not exact; the event log and
 transcripts are the audit trail.  The check itself is deterministic.
 
+## DAG scheduler prototype
+
+`harness/dag.py` is the runnable H5 prototype.  It reads a DAG JSON whose nodes
+name a `problem`, `deps`, `method`, `agents`, and `budget_s`.  Ready nodes get
+their own `new_run.py` run; the scheduler starts `omp -p` workers in the node
+workspaces, polls `events.jsonl`, stops sibling lanes at the first green check,
+and releases dependent nodes.
+
+The backend command is:
+
+```bash
+omp -p --cwd <workspace> --no-session --no-title --auto-approve \
+  --max-time <budget_s> --tools bash,read,write,edit,glob,grep <prompt>
+```
+
+`--dry-run` prints the create/start/spawn plan without touching the run store.
+The first real adapter smoke was a one-node `easy/gcd` DAG: 86.1s from start to
+green, with first-green sibling shutdown.  That validates the backend, not the
+H5 scheduling comparison.
+
 ## Scheduling and the retrospective
 
 A scheduler chooses cells, not individual agents:
